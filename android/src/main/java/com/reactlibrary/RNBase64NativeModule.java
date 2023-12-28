@@ -51,6 +51,10 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule implements 
     }
   }
 
+  public void onActivityResult(final Activity activity, final int requestCode, final int resultCode, final Intent data) {
+    onActivityResult(requestCode, resultCode, data);
+  }
+
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (pickerPromise != null) {
       if (resultCode == Activity.RESULT_OK) {
