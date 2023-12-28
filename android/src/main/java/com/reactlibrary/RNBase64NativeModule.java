@@ -51,7 +51,6 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule implements 
     }
   }
 
-  @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (pickerPromise != null) {
       if (resultCode == Activity.RESULT_OK) {
@@ -67,4 +66,6 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule implements 
     }
     pickerPromise = null;
   }
+
+  public void onNewIntent(Intent intent) {}
 }
