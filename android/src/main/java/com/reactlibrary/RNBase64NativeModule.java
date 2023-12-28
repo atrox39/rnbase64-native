@@ -38,8 +38,8 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule implements 
     pickerPromise = promise;
     try {
       final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      intent.setType("file/*");
+      intent.addCategory(Intent.CATEGORY_OPENABLE);
+      intent.setType("*/*");
       final Intent pickerIntent = Intent.createChooser(intent, "Choose file");
       currentActivity.startActivityForResult(pickerIntent, R_VALUE);
     } catch (Exception ex) {
