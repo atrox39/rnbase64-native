@@ -63,7 +63,7 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule {
       final Intent pickerIntent = Intent.createChooser(intent, "Choose file");
       currentActivity.startActivityForResult(pickerIntent, R_VALUE);
     } catch (Exception ex) {
-      pickerPromise.reject(ex.getMessage());
+      pickerPromise.reject("E_UNKNOWN_ERROR", ex.getMessage());
       pickerPromise = null;
     } finally {
       pickerPromise = null;
