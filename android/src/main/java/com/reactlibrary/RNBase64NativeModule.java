@@ -3,6 +3,7 @@ package com.reactlibrary;
 
 import android.content.Intent;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -23,10 +24,15 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void filePicker() {
-    ReactApplicationContext context = getReactApplicationContext();
-    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-    intent.setType("file/*");
-    context.startActivity(intent);
+  public void filePicker(Promise promise) {
+    try {
+      Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      intent.setType("file/*");
+      reactContext.startActivity(intent);
+      promise.resolve("OK");
+    } catch (Exception ex) {
+      promise.reject(ex.getMessage());
+    }
   }
 }
