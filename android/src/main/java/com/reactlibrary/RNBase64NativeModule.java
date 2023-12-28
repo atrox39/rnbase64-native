@@ -14,12 +14,10 @@ import com.facebook.react.bridge.ReactMethod;
 public class RNBase64NativeModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
   private final ReactApplicationContext reactContext;
-  private final Activity currentActivity;
 
   public RNBase64NativeModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
-    this.currentActivity = getCurrentActivity();
   }
 
   @Override
@@ -32,6 +30,7 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule implements 
 
   @ReactMethod
   public void filePicker(final Promise promise) {
+    final Activity currentActivity = getCurrentActivity();
     if (currentActivity == null) {
       promise.reject("E_ACTIVITY_DOES_NOT_EXIST", "Activity doesn't exist");
       return;
