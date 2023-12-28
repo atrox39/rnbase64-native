@@ -11,7 +11,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-public class RNBase64NativeModule extends ReactContextBaseJavaModule {
+public class RNBase64NativeModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
   private final ReactApplicationContext reactContext;
   private final Activity currentActivity;
@@ -20,7 +20,6 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule {
     super(reactContext);
     this.reactContext = reactContext;
     this.currentActivity = getCurrentActivity();
-    reactContext.addActivityEventListener(filePickerActivityResult);
   }
 
   @Override
@@ -29,25 +28,7 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule {
   }
 
   private Promise pickerPromise;
-  private int R_VALUE = 1; //
-  public final ActivityEventListener filePickerActivityResult = new ActivityEventListener() {
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-      if (pickerPromise != null) {
-        if (resultCode == Activity.RESULT_OK) {
-          Uri uri = data.getData();
-          if (uri != null) {
-            pickerPromise.resolve(uri.toString());
-          } else  {
-            pickerPromise.reject("E_NOT_FOUND", "File not found");
-          }
-        } else {
-          pickerPromise.reject("E_NO_FILE_SELECTED", "No file selected");
-        }
-      }
-      pickerPromise = null;
-    }
-  };
+  private int R_VALUE = 1;
 
   @ReactMethod
   public void filePicker(final Promise promise) {
@@ -68,5 +49,22 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule {
     } finally {
       pickerPromise = null;
     }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (pickerPromise != null) {
+      if (resultCode == Activity.RESULT_OK) {
+        Uri uri = data.getData();
+        if (uri != null) {
+          pickerPromise.resolve(uri.toString());
+        } else  {
+          pickerPromise.reject("E_NOT_FOUND", "File not found");
+        }
+      } else {
+        pickerPromise.reject("E_NO_FILE_SELECTED", "No file selected");
+      }
+    }
+    pickerPromise = null;
   }
 }
