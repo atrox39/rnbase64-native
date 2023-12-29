@@ -1,6 +1,6 @@
 {
   "name": "rnbase64-native",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Read base64 files",
   "main": "index.js",
   "scripts": {

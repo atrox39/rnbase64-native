@@ -55,19 +55,21 @@ public class RNBase64NativeModule extends ReactContextBaseJavaModule implements 
   }
 
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (pickerPromise != null) {
-      if (resultCode == Activity.RESULT_OK) {
-        Uri uri = data.getData();
-        if (uri != null) {
-          pickerPromise.resolve(uri.toString());
-        } else  {
-          pickerPromise.reject("E_NOT_FOUND", "File not found");
+    if (R_VALUE == requestCode) {
+      if (pickerPromise != null) {
+        if (requestCode == Activity.RESULT_CANCELED) {
+          pickerPromise.reject("E_CANCELLED", "Action is cancelled");
+        } else if (resultCode == Activity.RESULT_OK) {
+          Uri uri = data.getData();
+          if (uri != null) {
+            pickerPromise.resolve(uri.toString());
+          } else {
+            pickerPromise.reject("E_NOT_FOUND", "File not found");
+          }
         }
-      } else {
-        pickerPromise.reject("E_NO_FILE_SELECTED", "No file selected");
+        pickerPromise = null;
       }
     }
-    pickerPromise = null;
   }
 
   public void onNewIntent(Intent intent) {}
